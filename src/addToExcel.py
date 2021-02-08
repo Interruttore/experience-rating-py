@@ -2,7 +2,18 @@ from zipfile import error
 from openpyxl import load_workbook
 from datetime import date
 import constants
-import tools
+
+
+def getIndex(sheet):
+    i = 0
+    index = 0
+    for value in sheet.iter_rows(min_row=3, min_col=1, max_col=1, values_only=True):
+        if(value[0] != None):
+            i += 1
+        else:
+            index = i+3
+            break
+    return index
 
 
 def addMovie(info, filename):
@@ -18,7 +29,7 @@ def addMovie(info, filename):
 
     today = date.today()
     d1 = today.strftime("%d/%m/%Y")
-    index = tools.getIndex(sheet)
+    index = getIndex(sheet)
 
     try:
         sheet.cell(index, constants.MOVIE_NAME).value = info["name"]
