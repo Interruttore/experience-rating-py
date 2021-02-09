@@ -1,6 +1,6 @@
 import api
 import constants
-import addToExcel
+import add_excel
 import PySimpleGUIQt as sg
 
 # TODO Check for bugs
@@ -72,14 +72,12 @@ def main():
 
     layout = [
         [
-
             sg.Column(search_column),
             sg.VSeperator(),
             # sg.Column(poster_column),
             sg.Column(item_column)
         ]
     ]
-
     window = sg.Window("Experience Rating", layout)
 
     resultNumber = constants.DEAFULT_RESULT_NUMBER
@@ -103,7 +101,7 @@ def main():
         if event == "Search":
             movieRequest = api.api_req(
                 constants.MOVIE_URL, values["-SEARCH_BAR-"])
-            elements = api.getList(
+            elements = api.get_list(
                 movieRequest, resultNumber, "movie")
 
             window["-ITEM_LIST-"].update(elements["title"])
@@ -133,10 +131,11 @@ def main():
             info["genre"] = window["-ITEM_GENRE-"].DisplayText
             info["vote"] = values["-VOTE-"]
             try:
-                addToExcel.addMovie(info, filename)
+                add_excel.add_movie(info, filename)
                 window["-ERROR-"].update("Success!", text_color="green")
             except:
                 window["-ERROR-"].update("Error!", text_color="red")
 
 
-# main()
+#! Testing purposes
+main()

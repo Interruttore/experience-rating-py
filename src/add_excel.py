@@ -1,10 +1,9 @@
-from zipfile import error
 from openpyxl import load_workbook
 from datetime import date
 import constants
 
 
-def getIndex(sheet):
+def get_index(sheet):
     i = 0
     index = 0
     for value in sheet.iter_rows(min_row=3, min_col=1, max_col=1, values_only=True):
@@ -16,7 +15,7 @@ def getIndex(sheet):
     return index
 
 
-def addMovie(info, filename):
+def add_movie(info, filename):
 
     try:
         workbook = load_workbook(filename=filename)
@@ -24,12 +23,11 @@ def addMovie(info, filename):
 
     except:
         # TODO close workbook
-        print("Error in the excel")
-        return error
+        raise Exception("Error in the excel")
 
     today = date.today()
     d1 = today.strftime("%d/%m/%Y")
-    index = getIndex(sheet)
+    index = get_index(sheet)
 
     try:
         sheet.cell(index, constants.MOVIE_NAME).value = info["name"]

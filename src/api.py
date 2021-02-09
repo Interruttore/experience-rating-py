@@ -35,7 +35,7 @@ def genres_maker(genre_ids):
     return genres
 
 
-def getList(request, resultsNumber, type):
+def get_list(request, resultsNumber, type):
     i = 0
     complete = []
     element = {
