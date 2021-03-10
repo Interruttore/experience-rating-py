@@ -1,5 +1,6 @@
 import requests
 import constants
+import datetime
 
 
 def api_req(url, search):
@@ -43,18 +44,24 @@ def get_list(request, resultsNumber, type):
         "release_date": [],
         "genres": [],
         "overview": [],
-        "poster_path": []
+        # "poster_path": []
     }
     values = []
     if(type == "movie"):
 
         while i < len(request['results']) and i < resultsNumber:
-            title = request['results'][i]['title']
-            release_date = request['results'][i]['release_date']
-            genre_ids = request['results'][i]['genre_ids']
-            overview = request['results'][i]['overview']
-            poster_path = constants.POSTER_URL + \
-                request['results'][i]['poster_path']
+
+            try:
+                title = request['results'][i]['title']
+
+                release_date = datetime.datetime.strptime(
+                    request['results'][i]['release_date'], '%Y-%m-%d').strftime('%d/%m/%y')
+                genre_ids = request['results'][i]['genre_ids']
+                overview = request['results'][i]['overview']
+                # poster_path = constants.POSTER_URL + \
+                #  request['results'][i]['poster_path']
+            except:
+                print("Error at", i)
 
             genres = genres_maker(genre_ids)
 
@@ -62,7 +69,7 @@ def get_list(request, resultsNumber, type):
             element["release_date"].append(release_date)
             element["genres"].append(genres)
             element["overview"].append(overview)
-            element["poster_path"].append(poster_path)
+            # element["poster_path"].append(poster_path)
 
             i += 1
         return element

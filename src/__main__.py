@@ -99,6 +99,7 @@ def main():
             break
 
         if event == "Search":
+
             movieRequest = api.api_req(
                 constants.MOVIE_URL, values["-SEARCH_BAR-"])
             elements = api.get_list(
@@ -108,20 +109,29 @@ def main():
 
         if event == "-ITEM_LIST-":
 
-            index = elements["title"].index(window["-ITEM_LIST-"].get()[0])
+            try:
 
-            window["-ITEM_NAME-"].update(elements["title"][index])
-            window["-ITEM_DATE-"].update(elements["release_date"][index])
+                index = elements["title"].index(window["-ITEM_LIST-"].get()[0])
 
-            if(elements["genres"][index][0] != None):
-                genre_list = elements["genres"][index][0]
-                if(elements["genres"][index][1] != None):
-                    genre_list += "/" + elements["genres"][0][1]
+                window["-ITEM_NAME-"].update(elements["title"][index])
+                window["-ITEM_DATE-"].update(elements["release_date"][index])
 
-            window["-ITEM_GENRE-"].update(genre_list)
-            window["-ITEM_OVERVIEW-"].update(elements["overview"][index])
-            # window["-POSTER-"].update(data=poster)
-            # TODO FIX POSTER
+                #! TODO MAXIMUM 2
+                i = 0
+                for x in elements["genres"][index]:
+                    if not genre_list:
+                        genre_list = x
+                    elif i < 1:
+                        genre_list += "/" + x
+                        i += 1
+
+                window["-ITEM_GENRE-"].update(genre_list)
+                window["-ITEM_OVERVIEW-"].update(elements["overview"][index])
+                # window["-POSTER-"].update(data=poster)
+                # TODO FIX POSTER
+                genre_list = None
+            except:
+                print("Skipped one cycle")
 
         if event == "Add movie":
 
