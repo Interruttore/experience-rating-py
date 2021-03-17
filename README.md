@@ -11,7 +11,7 @@ This is the Python Version
 
 At the moment all this app can do is search for a movie using [TheMovieDB](https://www.themoviedb.org/), and add it to an Excel File.
 The movie added will have this format:
-Title, Release Date, Valutation Date, Genre, Rating
+Title, Release Date, Valuation Date, Genre, Rating
 
 ## License
 
