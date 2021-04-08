@@ -15,4 +15,5 @@ Title, Release Date, Valuation Date, Genre, Rating
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+Mozilla Public License 2.0
+
