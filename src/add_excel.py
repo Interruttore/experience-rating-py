@@ -35,7 +35,7 @@ def add_movie(info, filename):
             index, constants.MOVIE_RELEASE_DATE).value = info["release_date"]
         sheet.cell(index, constants.MOVIE_REVIEW_DATE).value = d1
         sheet.cell(index, constants.MOVIE_GENRE).value = info["genre"]
-        sheet.cell(index, constants.MOVIE_VOTE).value = info["vote"]
+        sheet.cell(index, constants.MOVIE_VOTE).value = float(info["vote"])
     except:
         print("Error in adding the movie")
     workbook.acive = workbook.save(filename=filename)

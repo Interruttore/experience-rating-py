@@ -55,7 +55,7 @@ def get_list(request, resultsNumber, type):
                 title = request['results'][i]['title']
 
                 release_date = datetime.datetime.strptime(
-                    request['results'][i]['release_date'], '%Y-%m-%d').strftime('%d/%m/%y')
+                    request['results'][i]['release_date'], '%Y-%m-%d').strftime('%d/%m/%Y')
                 genre_ids = request['results'][i]['genre_ids']
                 overview = request['results'][i]['overview']
                 # poster_path = constants.POSTER_URL + \
