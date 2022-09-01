@@ -36,20 +36,21 @@ def genres_maker(genre_ids):
     return genres
 
 
-def get_list(request, resultsNumber, type):
+def get_list(request, resultsNumber, type, window):
     i = 0
-    complete = []
     element = {
         "title": [],
         "release_date": [],
         "genres": [],
         "overview": [],
-        # "poster_path": []
+        "poster": []
     }
-    values = []
     if(type == "movie"):
 
         while i < len(request['results']) and i < resultsNumber:
+
+            window["-PROGRESS_BAR-"].update_bar(
+                ((i+1)/resultsNumber * 100))
 
             try:
                 title = request['results'][i]['title']
@@ -58,10 +59,13 @@ def get_list(request, resultsNumber, type):
                     request['results'][i]['release_date'], '%Y-%m-%d').strftime('%d/%m/%Y')
                 genre_ids = request['results'][i]['genre_ids']
                 overview = request['results'][i]['overview']
-                # poster_path = constants.POSTER_URL + \
-                #  request['results'][i]['poster_path']
+                poster_path = constants.POSTER_URL + \
+                    request['results'][i]['poster_path']
+
+                posterResp = requests.get(poster_path, stream=True)
+                poster = posterResp.raw.read()
             except:
-                print("Error at", i)
+                print("Error at ", i)
 
             genres = genres_maker(genre_ids)
 
@@ -69,7 +73,7 @@ def get_list(request, resultsNumber, type):
             element["release_date"].append(release_date)
             element["genres"].append(genres)
             element["overview"].append(overview)
-            # element["poster_path"].append(poster_path)
+            element["poster"].append(poster)
 
             i += 1
         return element

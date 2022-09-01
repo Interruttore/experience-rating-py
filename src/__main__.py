@@ -1,83 +1,50 @@
 import api
 import constants
-import add_excel
+import excel_functions
+import modules
 import PySimpleGUIQt as sg
 
 # TODO Check for bugs
 
 
 def main():
-    search_column = [
+
+    main_elements = [
         [
-            sg.In(size=(25, 1), enable_events=True,
-                  key="-SEARCH_BAR-", focus=True, ),
-            sg.Submit(size=(10, 1), button_text="Search")
-        ],
-        [
-            sg.Listbox(
-                values=[], enable_events=True, size=(36, 10), key="-ITEM_LIST-"
-            )
-        ],
-        [
-            sg.In(size=(25, 1), enable_events=True,
-                  key="-EXCEL_INPUT-"),
-            sg.FileBrowse(file_types=(("Excel Files ", "*.xlsx"),)),
+            sg.Frame("Search", modules.search_column,
+                     background_color="transparent"),
+            # sg.VSeperator(),
+            sg.Frame("Poster", modules.poster_column,
+                     background_color="transparent"),
+            sg.Frame("Info", modules.item_column,
+                     background_color="transparent")
+
         ]
     ]
 
-    poster_column = [
+    tools_elements = [
         [
-            sg.Image(filename="", key="-POSTER-")
-        ],
+            sg.Column(modules.tools_column),
+            sg.VSeperator(),
+            sg.Column(modules.tools_info_column)
+        ]
     ]
 
-    item_column = [
+    main_tab = [
         [
-            sg.Text(size=(6, 1),
-                    text="Name:"),
-            sg.Text(size=(30, 1),
-                    key="-ITEM_NAME-"),
-
-        ],
-        [
-            sg.Text(size=(6, 1),
-                    text="Date:"),
-            sg.Text(size=(30, 1),
-                    key="-ITEM_DATE-"),
-
-        ],
-        [
-            sg.Text(size=(6, 1),
-                    text="Genre:"),
-            sg.Text(size=(30, 1),
-                    key="-ITEM_GENRE-"),
-
-        ],
-        [
-            sg.Text(size=(6, 1),
-                    text="Overview:"),
-            sg.Multiline(size=(30, 10), disabled=True,
-                         key="-ITEM_OVERVIEW-"),
-
-        ],
-        [
-            sg.Spin(values=constants.VOTE_VALUES,
-                    enable_events=True, key="-VOTE-", size=(5, 1)),
-            sg.Submit(size=(10, 1), button_text="Add movie"),
-            sg.Text(size=(15, 1), key="-ERROR-", font=('Courier', 10))
-
+            sg.Tab("Main", main_elements),
+            sg.Tab("Tools", tools_elements),
+            # sg.Tab("Options", otpions_elements)
         ]
-
     ]
 
     layout = [
         [
-            sg.Column(search_column),
-            sg.VSeperator(),
-            # sg.Column(poster_column),
-            sg.Column(item_column)
+            sg.TabGroup(main_tab, "top", title_color=("black"))
+
         ]
     ]
+    sg.theme('Dark Blue 12')
     window = sg.Window("Experience Rating", layout)
 
     resultNumber = constants.DEAFULT_RESULT_NUMBER
@@ -99,13 +66,15 @@ def main():
             break
 
         if event == "Search":
+            if not values["-SEARCH_BAR-"] or values["-SEARCH_BAR-"].isspace():
+                print("Empty search string")
+            else:
+                movieRequest = api.api_req(
+                    constants.MOVIE_URL, values["-SEARCH_BAR-"])
+                elements = api.get_list(
+                    movieRequest, resultNumber, "movie", window)
 
-            movieRequest = api.api_req(
-                constants.MOVIE_URL, values["-SEARCH_BAR-"])
-            elements = api.get_list(
-                movieRequest, resultNumber, "movie")
-
-            window["-ITEM_LIST-"].update(elements["title"])
+                window["-ITEM_LIST-"].update(elements["title"])
 
         if event == "-ITEM_LIST-":
 
@@ -127,24 +96,27 @@ def main():
 
                 window["-ITEM_GENRE-"].update(genre_list)
                 window["-ITEM_OVERVIEW-"].update(elements["overview"][index])
-                # window["-POSTER-"].update(data=poster)
-                # TODO FIX POSTER
+                window["-POSTER-"].update(data=elements["poster"][index])
                 genre_list = None
             except:
                 print("Skipped one cycle")
 
         if event == "Add movie":
 
+            window["-ERROR-"].update("Adding...", text_color="black")
             filename = window["-EXCEL_INPUT-"].get()
             info["name"] = window["-ITEM_NAME-"].DisplayText
             info["release_date"] = window["-ITEM_DATE-"].DisplayText
             info["genre"] = window["-ITEM_GENRE-"].DisplayText
             info["vote"] = values["-VOTE-"]
             try:
-                add_excel.add_movie(info, filename)
+                excel_functions.add_movie(info, filename)
                 window["-ERROR-"].update("Success!", text_color="green")
             except:
                 window["-ERROR-"].update("Error!", text_color="red")
+
+        if event == "Clean duplicates":
+            excel_functions.remove_duplicate(filename)
 
 
 #! Testing purposes
