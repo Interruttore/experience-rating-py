@@ -2,22 +2,21 @@ import api
 import constants
 import excel_functions
 import modules
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 
 # TODO Check for bugs
 
 
 def main():
-
     main_elements = [
         [
-            sg.Frame("Search", modules.search_column,
-                     background_color="transparent"),
+            sg.Frame("Search", modules.search_column, expand_x=True, expand_y=True,
+                     ),
             # sg.VSeperator(),
-            sg.Frame("Poster", modules.poster_column,
-                     background_color="transparent"),
+            sg.Frame("Poster", modules.poster_column, expand_x=True, expand_y=True,
+                     ),
             sg.Frame("Info", modules.item_column,
-                     background_color="transparent")
+                     expand_x=True, expand_y=True,)
 
         ]
     ]
@@ -32,20 +31,21 @@ def main():
 
     main_tab = [
         [
-            sg.Tab("Main", main_elements),
-            sg.Tab("Tools", tools_elements),
+            sg.Tab("Main", main_elements,
+                   ),
+            sg.Tab("Tools", tools_elements,),
             # sg.Tab("Options", otpions_elements)
         ]
     ]
 
     layout = [
         [
-            sg.TabGroup(main_tab, "top", title_color=("black"))
-
+            sg.TabGroup(main_tab, "top", title_color=(
+                "black"), expand_x=True, expand_y=True, )
         ]
     ]
-    sg.theme('Dark Blue 12')
-    window = sg.Window("Experience Rating", layout)
+
+    window = sg.Window("Experience Rating", layout, resizable=True,)
 
     resultNumber = constants.DEAFULT_RESULT_NUMBER
 
@@ -58,7 +58,7 @@ def main():
         "vote": "",
 
     }
-    while(True):
+    while (True):
 
         event, values = window.read()
 
@@ -81,7 +81,6 @@ def main():
             try:
 
                 index = elements["title"].index(window["-ITEM_LIST-"].get()[0])
-
                 window["-ITEM_NAME-"].update(elements["title"][index])
                 window["-ITEM_DATE-"].update(elements["release_date"][index])
 
@@ -98,8 +97,8 @@ def main():
                 window["-ITEM_OVERVIEW-"].update(elements["overview"][index])
                 window["-POSTER-"].update(data=elements["poster"][index])
                 genre_list = None
-            except:
-                print("Skipped one cycle")
+            except Exception as e:
+                print("Error:", e)
 
         if event == "Add movie":
 

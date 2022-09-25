@@ -1,11 +1,13 @@
 import requests
 import constants
 import datetime
+from PIL import Image
+import io
 
 
 def api_req(url, search):
     try:
-        if(search):
+        if (search):
             response = requests.get(url, params={'query': search})
             response.raise_for_status()
         else:
@@ -45,7 +47,7 @@ def get_list(request, resultsNumber, type, window):
         "overview": [],
         "poster": []
     }
-    if(type == "movie"):
+    if (type == "movie"):
 
         while i < len(request['results']) and i < resultsNumber:
 
@@ -63,7 +65,12 @@ def get_list(request, resultsNumber, type, window):
                     request['results'][i]['poster_path']
 
                 posterResp = requests.get(poster_path, stream=True)
-                poster = posterResp.raw.read()
+                img = Image.open(io.BytesIO(posterResp.content))
+                bio = io.BytesIO()
+                img.save(bio, format="PNG")
+                img_data = bio.getvalue()
+                poster = img_data
+
             except:
                 print("Error at ", i)
 
