@@ -52,6 +52,11 @@ def remove_duplicate(filename):
         workbook = load_workbook(filename=filename)
         sheet = workbook[constants.MOVIE_SHEET]
 
-    except:
-        # TODO close workbook
-        raise Exception(constants.EXCEL_OPEN_ERR)
+    except Exception as e:
+        print("Error:", e)
+
+    try:
+        for row in sheet.iter_rows(min_row=1):
+            print(row[0].value)
+    except Exception as e:
+        print("Error:", e)

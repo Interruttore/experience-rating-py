@@ -79,7 +79,7 @@ def main():
         if event == "-ITEM_LIST-":
 
             try:
-
+                window["-ERROR-"].update("", text_color="black")
                 index = elements["title"].index(window["-ITEM_LIST-"].get()[0])
                 window["-ITEM_NAME-"].update(elements["title"][index])
                 window["-ITEM_DATE-"].update(elements["release_date"][index])
@@ -115,7 +115,11 @@ def main():
                 window["-ERROR-"].update("Error!", text_color="red")
 
         if event == "Clean duplicates":
-            excel_functions.remove_duplicate(filename)
+            try:
+                filename = window["-EXCEL_INPUT-"].get()
+                excel_functions.remove_duplicate(filename)
+            except Exception as e:
+                print("Error:", e)
 
 
 #! Testing purposes
