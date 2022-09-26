@@ -15,3 +15,14 @@ VOTE_VALUES = ["0", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4",
                "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10"]
 DEAFULT_RESULT_NUMBER = 10
 GENRE_NUMBER = 2
+
+
+# CONFIG
+THEME = "THEME"
+THEME_NAME = "themename"
+
+
+# THEMES
+
+THEMES_LIST = ["Blue Mono", "Dark", "Dark Blue", "Dark Teal 1",
+               "Dark Teal 6", "Light Blue 3", ]

@@ -1,7 +1,12 @@
 import PySimpleGUI as sg
+import functions
 import constants
 
-sg.theme('DarkTeal4')
+
+functions.createConfig()
+config = functions.getConfig()
+theme = config["THEME"]["themename"]
+sg.theme(theme)
 
 search_column = [
     [
@@ -16,7 +21,7 @@ search_column = [
     [
         sg.In(size=(25, 1), enable_events=True,
               key="-EXCEL_INPUT-"),
-        sg.FileBrowse(file_types=(("Excel Files ", "*.xlsx"),)),
+        sg.FileBrowse(file_types=(("Excel Files", "*.xlsx"),)),
     ]
 ]
 
@@ -69,15 +74,20 @@ item_column = [
 
 ]
 
-tools_column = [
+tools_info_column = [
     [
-        sg.Button("Clean duplicates")
+        sg.Button("Clean duplicates"),
+        sg.Multiline(size=(50, 10), disabled=True,
+                     key="-INFO_TOOLS-"),
     ],
 ]
 
-tools_info_column = [
+options_column = [
     [
-        sg.Multiline(size=(50, 10), disabled=True,
-                     key="-INFO_TOOLS-"),
-    ]
+        sg.Combo(size=(10, 10), readonly=True, default_value=theme,
+                 key="-INFO_THEMES-", values=sorted(constants.THEMES_LIST)),
+
+        sg.Button("Change theme(requires restart)")
+
+    ],
 ]

@@ -1,5 +1,8 @@
+import os
+import sys
 import api
 import constants
+import functions
 import excel_functions
 import modules
 import PySimpleGUI as sg
@@ -8,11 +11,11 @@ import PySimpleGUI as sg
 
 
 def main():
+
     main_elements = [
         [
             sg.Frame("Search", modules.search_column, expand_x=True, expand_y=True,
                      ),
-            # sg.VSeperator(),
             sg.Frame("Poster", modules.poster_column, expand_x=True, expand_y=True,
                      ),
             sg.Frame("Info", modules.item_column,
@@ -23,18 +26,21 @@ def main():
 
     tools_elements = [
         [
-            sg.Column(modules.tools_column),
-            sg.VSeperator(),
             sg.Column(modules.tools_info_column)
+        ]
+    ]
+
+    otpions_elements = [
+        [
+            sg.Column(modules.options_column)
         ]
     ]
 
     main_tab = [
         [
-            sg.Tab("Main", main_elements,
-                   ),
-            sg.Tab("Tools", tools_elements,),
-            # sg.Tab("Options", otpions_elements)
+            sg.Tab("Main", main_elements),
+            sg.Tab("Tools", tools_elements),
+            sg.Tab("Options", otpions_elements)
         ]
     ]
 
@@ -58,6 +64,7 @@ def main():
         "vote": "",
 
     }
+
     while (True):
 
         event, values = window.read()
@@ -120,6 +127,10 @@ def main():
                 excel_functions.remove_duplicate(filename)
             except Exception as e:
                 print("Error:", e)
+
+        if event == "Change theme(requires restart)":
+            functions.changeTheme(values["-INFO_THEMES-"])
+            os.execv(sys.executable, ['python'] + sys.argv)
 
 
 #! Testing purposes
