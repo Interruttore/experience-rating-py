@@ -72,7 +72,7 @@ def main():
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
 
-        if event == "Search":
+        if event == "-SEARCH-":
             if not values["-SEARCH_BAR-"] or values["-SEARCH_BAR-"].isspace():
                 print("Empty search string")
             else:
@@ -107,7 +107,7 @@ def main():
             except Exception as e:
                 print("Error:", e)
 
-        if event == "Add movie":
+        if event == "-ADD_MOVIE-":
 
             window["-ERROR-"].update("Adding...", text_color="black")
             filename = window["-EXCEL_INPUT-"].get()
@@ -121,14 +121,18 @@ def main():
             except:
                 window["-ERROR-"].update("Error!", text_color="red")
 
-        if event == "Clean duplicates":
+        if event == "-CLEAN_DUPLICATES-":
             try:
                 filename = window["-EXCEL_INPUT-"].get()
                 excel_functions.remove_duplicate(filename)
             except Exception as e:
                 print("Error:", e)
 
-        if event == "Change theme(requires restart)":
+        if event == "-CHANGE_THEME-":
+            functions.changeTheme(values["-INFO_THEMES-"])
+            os.execv(sys.executable, ['python'] + sys.argv)
+
+        if event == "-CHANGE_MOVIE_SHEET-":
             functions.changeTheme(values["-INFO_THEMES-"])
             os.execv(sys.executable, ['python'] + sys.argv)
 

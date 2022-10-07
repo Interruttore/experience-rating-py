@@ -12,7 +12,7 @@ search_column = [
     [
         sg.In(size=(25, 1), enable_events=True,
               key="-SEARCH_BAR-", focus=True, ),
-        sg.Submit(size=(10, 1), button_text="Search")
+        sg.Submit(size=(10, 1),key="-SEARCH-", button_text="Search")
     ],
     [
         sg.Listbox(
@@ -63,7 +63,7 @@ item_column = [
     [
         sg.Spin(values=constants.VOTE_VALUES,
                 enable_events=True, key="-VOTE-", size=(5, 1)),
-        sg.Submit(size=(10, 1), button_text="Add movie"),
+        sg.Submit(size=(10, 1), key="-ADD_MOVIE-", button_text="Add movie"),
         sg.Text(size=(15, 1), key="-ERROR-", font=('Courier', 10),)
 
     ],
@@ -76,7 +76,7 @@ item_column = [
 
 tools_info_column = [
     [
-        sg.Button("Clean duplicates"),
+        sg.Button(key="-CLEAN_DUPLICATES", button_text="Clean duplicates"),
         sg.Multiline(size=(50, 10), disabled=True,
                      key="-INFO_TOOLS-"),
     ],
@@ -84,10 +84,24 @@ tools_info_column = [
 
 options_column = [
     [
-        sg.Combo(size=(10, 10), readonly=True, default_value=theme,
+        sg.Text(size=(10, 1),
+                text="Theme:",),
+        sg.Combo(auto_size_text=True, readonly=True, default_value=theme,
                  key="-INFO_THEMES-", values=sorted(constants.THEMES_LIST)),
 
-        sg.Button("Change theme(requires restart)")
+        sg.Button(key="-CHANGE_THEME-",
+                  button_text="Change theme(requires restart)"),
+
+
 
     ],
+    [
+        sg.Text(size=(10, 1),
+                text="Movie sheet:",),
+        sg.In(size=(25, 1), enable_events=True,
+              key="-MOVIE_SHEET-", focus=True, ),
+
+        sg.Submit(size=(10, 1), key="-CHANGE_MOVIE_SHEET-",
+                  button_text="Change")
+    ]
 ]
