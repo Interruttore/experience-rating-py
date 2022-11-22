@@ -3,16 +3,16 @@ from datetime import date
 import constants
 
 
-# def get_index(sheet):
-#     i = 0
-#     index = 0
-#     for value in sheet.iter_rows(min_row=3, min_col=1, max_col=1, values_only=True):
-#         if(value[0] != None):
-#             i += 1
-#         else:
-#             index = i+3
-#             break
-#     return index
+def get_index(sheet):
+    i = 0
+    index = 0
+    for value in sheet.iter_rows(min_row=3, min_col=1, max_col=1, values_only=True):
+        if (value[0] != None):
+            i += 1
+        else:
+            index = i+3
+            break
+    return index
 
 
 def add_movie(info, filename):
@@ -29,21 +29,23 @@ def add_movie(info, filename):
 
     today = date.today()
     d1 = today.strftime("%d/%m/%Y")
-    #index = get_index(sheet)
+    index = get_index(sheet)
 
     try:
+        print("Adding movie", info["name"])
+        sheet.cell(index, constants.MOVIE_NAME).value = info["name"]
+        sheet.cell(
+            index, constants.MOVIE_RELEASE_DATE).value = info["release_date"]
+        sheet.cell(index, constants.MOVIE_REVIEW_DATE).value = d1
+        sheet.cell(index, constants.MOVIE_GENRE).value = info["genre"]
+        sheet.cell(index, constants.MOVIE_VOTE).value = float(info["vote"])
+        workbook.save(filename=filename)
+        print("Movie added")
 
-        sheet.append([info["name"], info["release_date"],
-                      d1, info["genre"], float(info["vote"])])
-        # sheet.cell(index, constants.MOVIE_NAME).value = info["name"]
-        # sheet.cell(
-        #     index, constants.MOVIE_RELEASE_DATE).value = info["release_date"]
-        # sheet.cell(index, constants.MOVIE_REVIEW_DATE).value = d1
-        # sheet.cell(index, constants.MOVIE_GENRE).value = info["genre"]
-        # sheet.cell(index, constants.MOVIE_VOTE).value = float(info["vote"])
     except:
         print("Error in adding the movie")
-    workbook.acive = workbook.save(filename=filename)
+
+    workbook.close()
 
 
 def remove_duplicate(filename):

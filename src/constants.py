@@ -1,11 +1,11 @@
 # Sheet Constants
 # ---------------------------------
 MOVIE_SHEET = "Film"
-# MOVIE_NAME = 1
-# MOVIE_RELEASE_DATE = 2
-# MOVIE_REVIEW_DATE = 3
-# MOVIE_GENRE = 4
-# MOVIE_VOTE = 5
+MOVIE_NAME = 1
+MOVIE_RELEASE_DATE = 2
+MOVIE_REVIEW_DATE = 3
+MOVIE_GENRE = 4
+MOVIE_VOTE = 5
 
 # API
 # --------------------------------
@@ -18,11 +18,12 @@ GENRE_NUMBER = 2
 
 
 # CONFIG
+# --------------------------------
 THEME = "THEME"
 THEME_NAME = "themename"
 
 
 # THEMES
-
+# --------------------------------
 THEMES_LIST = ["Blue Mono", "Dark", "Dark Blue", "Dark Teal 1",
                "Dark Teal 6", "Light Blue 3", ]

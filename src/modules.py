@@ -12,7 +12,7 @@ search_column = [
     [
         sg.In(size=(25, 1), enable_events=True,
               key="-SEARCH_BAR-", focus=True, ),
-        sg.Submit(size=(10, 1),key="-SEARCH-", button_text="Search")
+        sg.Submit(size=(10, 1), key="-SEARCH-", button_text="Search")
     ],
     [
         sg.Listbox(
@@ -57,7 +57,7 @@ item_column = [
         sg.Text(size=(6, 1),
                 text="Overview:",),
         sg.Multiline(size=(30, 10), disabled=True,
-                     key="-ITEM_OVERVIEW-", text_color="white", expand_x=True, expand_y=True),
+                     key="-ITEM_OVERVIEW-",  expand_x=True, expand_y=True),
 
     ],
     [
