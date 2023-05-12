@@ -24,7 +24,6 @@ def add_movie(info, filename):
         sheet = workbook[constants.MOVIE_SHEET]
 
     except:
-        # TODO close workbook
         raise Exception(constants.EXCEL_OPEN_ERR)
 
     today = date.today()
